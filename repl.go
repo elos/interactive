@@ -1,11 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/elos/autonomous"
-	"github.com/elos/mongo"
 	"github.com/elos/space"
 	"github.com/elos/stack"
 	"github.com/robertkrimen/otto"
@@ -17,28 +18,23 @@ var Otto = otto.New()
 
 func main() {
 	fmt.Println("Elos Script\n")
-	mongo.Runner.Logger = mongo.NullLogger // hear nothing from mongo
+	// mongo.Runner.Logger = mongo.NullLogger // hear nothing from mongo
 
 	h := autonomous.NewHub()
 	go h.Start()
 
-	h.StartAgent(mongo.Runner)
+	// h.StartAgent(mongo.Runner)
 	store := stack.SetupStore("localhost")
 
-	/*
-		scanner := bufio.NewScanner(os.Stdin)
-		fmt.Print("ID: ")
-		scanner.Scan()
-		id := scanner.Text()
-		fmt.Println(id)
-		fmt.Print("Key: ")
-		scanner.Scan()
-		key := scanner.Text()
-		fmt.Println(key)
-	*/
-
-	id := "54dec8f084a588e46d000001"
-	key := "cgy1LfpQ7UufLfh2eDBsC2IKLdei02o6_TGm4iC98xhBn_nBeXcqbLYbBrTrE1UH"
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("ID: ")
+	scanner.Scan()
+	id := scanner.Text()
+	fmt.Println(id)
+	fmt.Print("Key: ")
+	scanner.Scan()
+	key := scanner.Text()
+	fmt.Println(key)
 
 	c := &space.Credentials{
 		ID:  id,
@@ -99,13 +95,16 @@ func (r *REPL) read() {
 	if err != nil {
 		fmt.Println(err)
 		go r.Manager().Stop()
+		return
 	}
 	if entry == "exit" {
 		fmt.Println("Goodbye")
 		go r.Manager().Stop()
+		return
 	}
 
 	r.entries <- entry
+	linenoise.AddHistory(entry)
 }
 
 func (repl *REPL) dispatch(entry string) {
