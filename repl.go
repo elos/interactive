@@ -17,7 +17,7 @@ import (
 var Otto = otto.New()
 
 func main() {
-	fmt.Println("Elos Script\n")
+	fmt.Fprintln(os.Stdout, "Elos Script\n")
 	// mongo.Runner.Logger = mongo.NullLogger // hear nothing from mongo
 
 	h := autonomous.NewHub()
@@ -27,14 +27,12 @@ func main() {
 	store := stack.SetupStore("localhost")
 
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("ID: ")
+	fmt.Fprint(os.Stdout, "ID: ")
 	scanner.Scan()
 	id := scanner.Text()
-	fmt.Println(id)
-	fmt.Print("Key: ")
+	fmt.Fprint(os.Stdout, "Key: ")
 	scanner.Scan()
 	key := scanner.Text()
-	fmt.Println(key)
 
 	c := &space.Credentials{
 		ID:  id,
