@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/elos/autonomous"
-	"github.com/elos/space"
+	"github.com/elos/models/memory"
 	"github.com/elos/stack"
 	"github.com/robertkrimen/otto"
 
@@ -34,12 +34,12 @@ func main() {
 	scanner.Scan()
 	key := scanner.Text()
 
-	c := &space.Credentials{
+	c := &memory.Credentials{
 		ID:  id,
 		Key: key,
 	}
 
-	s, err := space.NewSpace(c, store)
+	s, err := memory.NewSpace(c, store)
 	if err != nil {
 		log.Fatal(err)
 	}
