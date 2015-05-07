@@ -3,7 +3,7 @@ package interactive
 import (
 	"fmt"
 
-	"github.com/elos/d"
+	"github.com/elos/data"
 	"github.com/elos/models"
 	"github.com/robertkrimen/otto"
 )
@@ -19,12 +19,12 @@ type Credentials struct {
 }
 
 type Env struct {
-	db   d.DB
+	db   data.DB
 	otto *otto.Otto
 	user *models.User
 }
 
-func NewEnv(db d.DB, u *models.User) *Env {
+func NewEnv(db data.DB, u *models.User) *Env {
 	e := new(Env)
 
 	e.db = db
