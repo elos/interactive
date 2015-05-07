@@ -9,6 +9,7 @@ import (
 	"github.com/elos/autonomous"
 	"github.com/elos/interactive"
 	"github.com/elos/models"
+	"github.com/elos/models/user"
 
 	"github.com/GeertJohan/go.linenoise"
 )
@@ -20,14 +21,18 @@ func main() {
 	h := autonomous.NewHub()
 	go h.Start()
 
-	store, err := models.MongoDB("localhost")
+	db, err := models.MongoDB("localhost")
 	if err != nil {
 		log.Fatal("Failed to connect to db: %s", err)
 	}
 
-	//_ := RetrieveCredentials(bufio.NewScanner(os.Stdin))
+	c := RetrieveCredentials(bufio.NewScanner(os.Stdin))
+	u, ok, err := user.Authenticate(db, c.ID, c.Key)
+	if !ok {
+		log.Fatal(err)
+	}
 
-	e := interactive.NewEnv(store, models.NewUser())
+	e := interactive.NewEnv(db, u)
 	r := NewREPL(e)
 	h.StartAgent(r)
 	go autonomous.HandleIntercept(h.Stop)
