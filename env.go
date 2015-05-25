@@ -30,6 +30,7 @@ func NewEnv(db data.DB, u *models.User) *Env {
 	e.db = db
 	e.otto = otto.New()
 	e.otto.Set("me", u)
+	e.otto.Set("db", db)
 	e.user = u
 
 	return e
@@ -46,9 +47,11 @@ func (e *Env) Interpret(entry string) string {
 		return err.Error()
 	}
 
+	/* results in SyntaxError: invalid character 'o' looking for beginning of value
 	if value.IsObject() {
 		return e.Interpret(fmt.Sprintf(jsonParseFormat, entry))
 	}
+	*/
 
 	return fmt.Sprintf("%v", value)
 }
