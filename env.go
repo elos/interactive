@@ -55,3 +55,7 @@ func (e *Env) Interpret(entry string) string {
 
 	return fmt.Sprintf("%v", value)
 }
+
+func (e *Env) Set(variableName string, value interface{}) {
+	e.otto.Set(variableName, value)
+}
