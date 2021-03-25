@@ -9,6 +9,7 @@ import (
 	"github.com/elos/autonomous"
 	"github.com/elos/interactive"
 	"github.com/elos/models"
+	"github.com/elos/models/access"
 
 	"github.com/GeertJohan/go.linenoise"
 )
@@ -26,7 +27,7 @@ func main() {
 	}
 
 	c := RetrieveCredentials(bufio.NewScanner(os.Stdin))
-	credential, err := models.Authenticate(db, c.ID, c.Key)
+	credential, err := access.Authenticate(db, c.ID, c.Key)
 	if err != nil {
 		log.Fatal(err)
 	}
